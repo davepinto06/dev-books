@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from "astro:content"
-import { SHOW_BUY_BUTTON } from "astro:env/server"
+
 import Layout from "../../layouts/Layout.astro"
 import AmazonLogo from "../../components/AmazonLogo.astro"
 import BookScore from "../../components/BookScore.astro"
@@ -21,6 +21,8 @@ const { title, author, img, readtime, description, buy } = data
 const { Content } = await render(book)
 
 export const prerender = true
+
+const showBuyButton = import.meta.env.SHOW_BUY_BUTTON
 ---
 
 <Layout>
@@ -44,7 +46,7 @@ export const prerender = true
         </div>
       </div>
       {
-        SHOW_BUY_BUTTON && (
+        showBuyButton && (
           <a
             href={book.data.buy.spain}
             title="Comprar libro"

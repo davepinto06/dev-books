@@ -1,7 +1,7 @@
 ---
-import { SCORE_API_ENDPOINT } from "astro:env/server"
+const apiEndpoint = import.meta.env.SCORE_API_ENDPOINT
 
-const res = await fetch(SCORE_API_ENDPOINT)
+const res = await fetch(apiEndpoint)
 
 const scoreValue = await res.text()
 ---
