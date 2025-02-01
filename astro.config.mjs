@@ -3,7 +3,7 @@ import { defineConfig, envField } from "astro/config"
 
 import tailwind from "@astrojs/tailwind"
 
-import cloudflare from "@astrojs/cloudflare";
+import cloudflare from "@astrojs/cloudflare"
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,7 +12,7 @@ export default defineConfig({
 
   env: {
     schema: {
-      SHOW_BUY_BUTTON: envField.boolean({
+      SHOW_BUY_BUTTON: envField.string({
         context: "server",
         access: "public",
       }),

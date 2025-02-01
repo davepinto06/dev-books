@@ -1,6 +1,5 @@
 ---
 import { getCollection, render } from "astro:content"
-
 import Layout from "../../layouts/Layout.astro"
 import AmazonLogo from "../../components/AmazonLogo.astro"
 import BookScore from "../../components/BookScore.astro"
@@ -22,7 +21,7 @@ const { Content } = await render(book)
 
 export const prerender = true
 
-const showBuyButton = import.meta.env.SHOW_BUY_BUTTON
+const showMyButtonValue = Astro.locals.showMyButton === "true"
 ---
 
 <Layout>
@@ -46,7 +45,7 @@ const showBuyButton = import.meta.env.SHOW_BUY_BUTTON
         </div>
       </div>
       {
-        showBuyButton && (
+        showMyButtonValue && (
           <a
             href={book.data.buy.spain}
             title="Comprar libro"

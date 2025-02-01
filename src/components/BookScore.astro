@@ -1,11 +1,7 @@
 ---
-const apiEndpoint = import.meta.env.SCORE_API_ENDPOINT
-
-const res = await fetch(apiEndpoint)
-
-const scoreValue = await res.text()
+const scoreValue = Astro.locals.scoreValue || "N/A"
 ---
 
 <span id="score" class="text-white text-xs font-bold">
-  {`⭐ Puntuacion ${scoreValue.trim()}/5`}
+  {`⭐ Puntuacion ${scoreValue}/5`}
 </span>
