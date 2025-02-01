@@ -1,11 +1,54 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro"
+import { getCollection } from "astro:content"
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const books = await getCollection("books")
+
+export const prerender = true
 ---
 
 <Layout>
-	<Welcome />
+  <main>
+    <div class="mx-auto p-4">
+      <h1 class="text-center text-7xl font-extrabold">
+        Dev👨‍💻<span class="block">Books</span>
+      </h1>
+    </div>
+    <section>
+      <div class="px-4 mx-auto max-w-screen-xl">
+        <div class="grid gap-6 md:grid-cols-2">
+          {
+            books.map((book) => {
+              const { id, data } = book
+              const { title, author, img, readtime, description, buy } = data
+
+              return (
+                <article class="flex">
+                  <a
+                    href={`./books/${id}`}
+                    class="mb-2 mr-5 xl:mb-0 transition hover:scale-110"
+                  >
+                    <img
+                      transition:name={`img-${id}`}
+                      src={`/${img}`}
+                      class="mr-5 w-48 rounded-lg"
+                      alt={title}
+                    />
+                  </a>
+                  <div class="flex flex-col justify-center">
+                    <h2 class="mb-2 text-2xl font-bold leading-tight text-white">
+                      {title}
+                    </h2>
+
+                    <p class="mb-4 text-gray-300 max-w-sm">{description}</p>
+                    <span class="text-xs"> Lectura en {readtime} minutos</span>
+                  </div>
+                </article>
+              )
+            })
+          }
+        </div>
+      </div>
+    </section>
+  </main>
 </Layout>

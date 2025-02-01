@@ -1,0 +1,69 @@
+---
+import { getCollection, render } from "astro:content"
+import { SHOW_BUY_BUTTON } from "astro:env/server"
+import Layout from "../../layouts/Layout.astro"
+import AmazonLogo from "../../components/AmazonLogo.astro"
+import BookScore from "../../components/BookScore.astro"
+
+export async function getStaticPaths() {
+  const books = await getCollection("books")
+
+  return books.map((book) => ({
+    params: { id: book.id },
+    props: { book },
+  }))
+}
+
+const { book } = Astro.props
+const { id, data } = book
+const { title, author, img, readtime, description, buy } = data
+
+const { Content } = await render(book)
+
+export const prerender = true
+---
+
+<Layout>
+  <div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center p-4">
+    <aside class="grid gap-4 justify-center mb-4 md:mb-0">
+      <a class="underline" href="/">Go back 🔙</a>
+      <img
+        transition:name={`img-${id}`}
+        src={`/${img}`}
+        alt={title}
+        class="rounded w-72 h-auto"
+      />
+      <BookScore server:defer>
+        <span slot="fallback" class="text-xs opacity-70">Loading score</span>
+      </BookScore>
+      <div class="flex flex-col">
+        <div></div>
+        <div class="flex justify-between">
+          <span class="text-white text-xs font-bold">{author}</span>
+          <span class="text-white text-xs font-bold">{`⏰${readtime}`}</span>
+        </div>
+      </div>
+      {
+        SHOW_BUY_BUTTON && (
+          <a
+            href={book.data.buy.spain}
+            title="Comprar libro"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-balance inline-flex gap-2 items-center bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-600 text-black font-bold py-2 px-4 rounded-lg border border-yellow-500 transition duration-200 ease-in-out hover:scale-105 justify-center text-center"
+          >
+            Comprar en Amazon ES
+            <AmazonLogo />
+          </a>
+        )
+      }
+    </aside>
+
+    <main class="max-w-3xl">
+      <h1 class="text-4xl font-bold mb-4">{title}</h1>
+      <div>
+        <Content />
+      </div>
+    </main>
+  </div>
+</Layout>
